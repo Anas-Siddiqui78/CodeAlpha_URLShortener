@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Shortener 🔗</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Animate.css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #1b1b2f;
+      overflow: hidden;
+    }
+
+    /* Particle container */
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    /* Card styling */
+    .card {
+      position: relative;
+      z-index: 1;
+      border-radius: 20px;
+      padding: 40px;
+      width: 100%;
+      max-width: 450px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: none;
+    }
+
+    h2 {
+      color: #fff;
+      font-weight: bold;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    }
+
+    /* Input styling */
+    .form-control {
+      border-radius: 50px;
+      border: none;
+      padding: 15px 20px;
+      transition: all 0.3s ease-in-out;
+    }
+    .form-control:focus {
+      outline: none;
+      box-shadow: 0 0 15px rgba(110, 142, 251, 0.8);
+      transform: scale(1.02);
+    }
+
+    /* Button styling */
+    .btn-primary {
+      border-radius: 50px;
+      font-weight: bold;
+      background: linear-gradient(90deg, #6e8efb, #a777e3);
+      border: none;
+      transition: all 0.3s ease-in-out;
+    }
+    .btn-primary:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #a777e3, #6e8efb);
+      box-shadow: 0 0 15px rgba(255,255,255,0.5);
+    }
+
+    /* Alert styling */
+    .alert-success {
+      border-radius: 15px;
+      font-weight: bold;
+      color: #fff;
+      background: rgba(46, 204, 113, 0.8);
+      border: none;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Particle Background -->
+<div id="particles-js"></div>
+
+<!-- Main Container -->
+<div class="container animate__animated animate__fadeInDown">
+  <div class="card shadow animate__animated animate__fadeInUp animate__delay-1s">
+    <h2 class="text-center mb-4 animate__animated animate__bounceIn">URL Shortener 🔗</h2>
+
+    <form action="/shorten-url" method="POST" class="animate__animated animate__fadeInUp animate__delay-2s">
+      <input type="text" name="long_url" class="form-control mb-3" placeholder="Enter long URL here..." required>
+      <button class="btn btn-primary w-100">Shorten URL</button>
+    </form>
+
+    {% if short_url %}
+    <div class="alert alert-success mt-4 text-center animate__animated animate__zoomIn">
+      <b>Short URL:</b> 
+      <a href="{{ short_url }}" target="_blank">{{ short_url }}</a>
+      <br><br>
+      <button class="btn btn-dark btn-sm" onclick="copyURL('{{ short_url }}')">Copy</button>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  // Copy URL function with animated alert
+  function copyURL(url) {
+    navigator.clipboard.writeText(url);
+    const alertBox = document.createElement('div');
+    alertBox.innerHTML = `<div class="alert alert-success fixed-top m-3 animate__animated animate__fadeInDown" role="alert">
+                            ✅ URL copied: ${url}
+                          </div>`;
+    document.body.appendChild(alertBox);
+    setTimeout(() => alertBox.remove(), 2500);
+  }
+
+  // Particles.js configuration
+  particlesJS("particles-js", {
+    "particles": {
+      "number": { "value": 80, "density": { "enable": true, "value_area": 800 }},
+      "color": { "value": "#ffffff" },
+      "shape": { "type": "circle" },
+      "opacity": { "value": 0.5, "random": true },
+      "size": { "value": 3, "random": true },
+      "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+      "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out" }
+    },
+    "interactivity": {
+      "detect_on": "canvas",
+      "events": { "onhover": { "enable": true, "mode": "repulse" }, "onclick": { "enable": true, "mode": "push" } },
+      "modes": { "repulse": { "distance": 100 }, "push": { "particles_nb": 4 } }
+    },
+    "retina_detect": true
+  });
+</script>
+
+</body>
+</html>
